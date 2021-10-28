@@ -1,0 +1,8 @@
+.dockerignore
+.env
+.env.local
+sql.db
+.git
+main
+.goreload
+Makefile
