@@ -1,27 +1,32 @@
 package models
 
 import (
+	"database/sql"
 	"time"
-
-	"gorm.io/gorm"
 )
 
 // Candle to hold daily OHCLV data
 type Candle struct {
-	gorm.Model
+	ID        uint         `json:"-" gorm:"primarykey"`
+	CreatedAt time.Time    `json:"-"`
+	UpdatedAt time.Time    `json:"-"`
+	DeletedAt sql.NullTime `json:"-" gorm:"index"`
 
 	Close   *int64     `json:"close"`
 	Date    *time.Time `json:"date"`
 	High    *int64     `json:"high"`
 	Low     *int64     `json:"low"`
 	Open    *int64     `json:"open"`
-	StockID *uint      `json:"stock_id"`
+	StockID *uint      `json:"-"`
 	Volume  *int64     `json:"volume"`
 }
 
 // Stock to hold stock Info
 type Stock struct {
-	gorm.Model
+	ID        uint         `json:"-" gorm:"primarykey"`
+	CreatedAt time.Time    `json:"-"`
+	UpdatedAt time.Time    `json:"-"`
+	DeletedAt sql.NullTime `json:"-" gorm:"index"`
 
 	Candles     []Candle `json:"candles"`
 	Description *string  `json:"description"`
@@ -32,7 +37,10 @@ type Stock struct {
 
 // Index to hold Indices
 type Index struct {
-	gorm.Model
+	ID        uint         `json:"-" gorm:"primarykey"`
+	CreatedAt time.Time    `json:"-"`
+	UpdatedAt time.Time    `json:"-"`
+	DeletedAt sql.NullTime `json:"-" gorm:"index"`
 
 	Name        *string `json:"name"`
 	Description *string `json:"description"`

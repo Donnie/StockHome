@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/Donnie/stockhome/models"
 	"github.com/Donnie/stockhome/providers"
+	"github.com/gin-gonic/gin"
 	"github.com/jasonlvhit/gocron"
 	"github.com/joho/godotenv"
 )
@@ -27,6 +29,18 @@ func init() {
 func main() {
 	// put DB to context
 	db := initDB()
+
+	r := gin.Default()
+	r.GET("/stocks/:sym", func(c *gin.Context) {
+		stock := models.GetStockWithCandles(db, c.Param("sym"))
+		c.JSON(200, stock)
+	})
+
+	r.GET("/health", func(c *gin.Context) {
+		c.JSON(200, nil)
+	})
+	fmt.Println("Server started on PORT 8080")
+	r.Run()
 
 	// create scheduler
 	// update indices
