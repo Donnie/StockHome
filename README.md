@@ -7,6 +7,10 @@ This app tracks the S&P 500 Index and updates the stocks list weekly. And it upd
 
 Data is locally stored in sqlite file in db/sql.db
 
+## API
+Candle data is available on /stocks/:sym endpoint
+
+A special key has to be added as query parameter, which can be set in PASS variable in .env file
+
 ## Future
-- API with secret key
 - Telegram Bot to check stock historical prices

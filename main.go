@@ -32,8 +32,14 @@ func main() {
 
 	r := gin.Default()
 	r.GET("/stocks/:sym", func(c *gin.Context) {
-		stock := models.GetStockWithCandles(db, c.Param("sym"))
-		c.JSON(200, stock)
+		key, ok := c.GetQuery("key")
+
+		if ok && key == os.Getenv("PASS") {
+			stock := models.GetStockWithCandles(db, c.Param("sym"))
+			c.JSON(200, stock)
+			return
+		}
+		c.JSON(403, "Please provide API key")
 	})
 
 	r.GET("/health", func(c *gin.Context) {
