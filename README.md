@@ -10,6 +10,8 @@ Data is locally stored in sqlite file in db/sql.db
 ## API
 Candle data is available on /stocks/:sym endpoint
 
+Index data is available on /indices/:sym endpoint
+
 A special key has to be added as query parameter, which can be set in PASS variable in .env file
 
 ## Future

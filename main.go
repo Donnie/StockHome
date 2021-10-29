@@ -42,11 +42,21 @@ func main() {
 		c.JSON(403, "Please provide API key")
 	})
 
+	r.GET("/indices/:sym", func(c *gin.Context) {
+		key, ok := c.GetQuery("key")
+
+		if ok && key == os.Getenv("PASS") {
+			index := models.GetIndexWithStocks(db, c.Param("sym"))
+			c.JSON(200, index)
+			return
+		}
+		c.JSON(403, "Please provide API key")
+	})
+
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(200, nil)
 	})
-	fmt.Println("Server started on PORT 8080")
-	r.Run()
+	go r.Run()
 
 	// create scheduler
 	// update indices
