@@ -28,11 +28,11 @@ type Stock struct {
 	UpdatedAt time.Time    `json:"-"`
 	DeletedAt sql.NullTime `json:"-" gorm:"index"`
 
-	Candles     []Candle `json:"candles"`
-	Description *string  `json:"description"`
-	Name        *string  `json:"name"`
-	Sector      *string  `json:"sector"`
-	Symbol      *string  `json:"symbol"`
+	Candles     []Candle `json:"candles,omitempty"`
+	Description *string  `json:"description,omitempty"`
+	Name        *string  `json:"name,omitempty"`
+	Sector      *string  `json:"sector,omitempty"`
+	Symbol      *string  `json:"symbol,omitempty"`
 }
 
 // Index to hold Indices
@@ -42,10 +42,10 @@ type Index struct {
 	UpdatedAt time.Time    `json:"-"`
 	DeletedAt sql.NullTime `json:"-" gorm:"index"`
 
-	Name        *string `json:"name"`
-	Description *string `json:"description"`
-	Stocks      []Stock `json:"stocks" gorm:"many2many:indices_stocks"`
-	Symbol      *string `json:"symbol"`
+	Name        *string `json:"name,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Stocks      []Stock `json:"stocks,omitempty" gorm:"many2many:indices_stocks"`
+	Symbol      *string `json:"symbol,omitempty"`
 }
 
 // TableName overrides the table name used by Index to Indices
