@@ -19,7 +19,7 @@ type Candle struct {
 }
 
 // GetCandleLatest generates the REST API for the data provider
-func GetCandleLatest(symbol string, lastTime time.Time, free bool) (string, *int) {
+func GetCandleLatest(symbol string, lastTime time.Time, free bool) (string, *float64) {
 	api := os.Getenv("API")
 	apikey := os.Getenv("KEY")
 	endUnix := RoundTimeToDate(time.Now()).Unix()
@@ -33,7 +33,7 @@ func GetCandleLatest(symbol string, lastTime time.Time, free bool) (string, *int
 		apikey,
 	)
 	if free {
-		rate := 59
+		rate := 59.0
 		return ep, &rate
 	}
 	return ep, nil

@@ -5,11 +5,12 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 )
 
 // GetHTTP to make GET call
-func GetHTTP(api string, ratePM *int) string {
+func GetHTTP(api string, ratePM *float64) string {
 	fmt.Println(api)
 	resp, err := http.Get(api)
 	if err != nil {
@@ -35,6 +36,15 @@ func GetHTTP(api string, ratePM *int) string {
 		os.Exit(3)
 	}
 	return string(body)
+}
+
+// StringToCSV transforms csv string to array
+func StringToCSV(input string) (output [][]string) {
+	lines := strings.Split(strings.ReplaceAll(input, "\r\n", "\n"), "\n")
+	for _, line := range lines {
+		output = append(output, strings.Split(line, ","))
+	}
+	return
 }
 
 // RoundTimeToDate round times to day start

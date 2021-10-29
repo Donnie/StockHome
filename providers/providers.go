@@ -66,3 +66,33 @@ func UpdateCandles(db *gorm.DB) {
 		}
 	}
 }
+
+// UpdateHistoryCandles updates stock data
+func UpdateHistoryCandles(db *gorm.DB, lastDate time.Time) {
+	// Find one stock with missing candles before a certain date
+	stock := models.Stock{}
+
+	db.Where(`NOT EXISTS (
+		SELECT * FROM candles
+		WHERE date < ? 
+			AND stock_id = stocks.id
+	)`, lastDate).First(&stock)
+
+	if stock.Symbol == nil {
+		return
+	}
+
+	fmt.Println("Stock update started:", *stock.Symbol, time.Now())
+
+	// get first candle of stock
+	firstCandle := models.Candle{}
+	db.Where("stock_id = ?", stock.ID).Order("date ASC").First(&firstCandle)
+
+	// fetch data from provider
+	candles := api.GetHistory(*stock.Symbol, stock.ID, *firstCandle.Date)
+
+	if len(candles) > 0 {
+		// upload data to DB
+		db.Create(&candles)
+	}
+}

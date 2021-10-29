@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
+	"time"
 
 	"github.com/Donnie/stockhome/models"
 	"github.com/Donnie/stockhome/providers"
@@ -64,6 +66,11 @@ func main() {
 
 	// update stocks
 	gocron.Every(1).Day().At(os.Getenv("TIME")).Do(providers.UpdateCandles, db)
+
+	// Update historical candles
+	lastDate, _ := time.Parse("2006-01-02", os.Getenv("HIST_END"))
+	rate, _ := strconv.Atoi(os.Getenv("HIST_RATE"))
+	gocron.Every(uint64(rate)).Second().Do(providers.UpdateHistoryCandles, db, lastDate)
 
 	// Start jobs
 	<-gocron.Start()
