@@ -33,6 +33,8 @@ type Stock struct {
 	Name        *string  `json:"name,omitempty"`
 	Sector      *string  `json:"sector,omitempty"`
 	Symbol      *string  `json:"symbol,omitempty"`
+
+	History *bool `json:"-"`
 }
 
 // Index to hold Indices

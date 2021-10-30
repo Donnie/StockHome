@@ -1,0 +1,1 @@
+ALTER TABLE stocks ADD COLUMN history BOOLEAN DEFAULT 0 CHECK (history IN (0, 1));

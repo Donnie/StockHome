@@ -16,7 +16,7 @@ func GenAlpha(symbol string, free bool) (string, *float64) {
 	api := os.Getenv("HIST")
 	apikey := os.Getenv("HIST_KEY")
 	ep := fmt.Sprintf(
-		"%s?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%s&apikey=%s&datatype=csv&outputsize=full",
+		"%s?function=TIME_SERIES_DAILY&symbol=%s&apikey=%s&datatype=csv&outputsize=full",
 		api,
 		symbol,
 		apikey,
@@ -29,12 +29,12 @@ func GenAlpha(symbol string, free bool) (string, *float64) {
 }
 
 // GetHistory sorts
-func GetHistory(sym string, stockID uint, firstDate time.Time) (candles []models.Candle) {
+func GetHistory(sym string, stockID uint, firstDate *time.Time) (candles []models.Candle) {
 	data := GetHTTP(GenAlpha(sym, false))
 	csv := StringToCSV(data)
 
 	for _, cs := range csv[1:] {
-		if len(cs) < 9 {
+		if len(cs) < 6 {
 			continue
 		}
 		date, _ := time.Parse("2006-01-02", cs[0])
@@ -42,7 +42,7 @@ func GetHistory(sym string, stockID uint, firstDate time.Time) (candles []models
 		if date.Unix() < start.Unix() {
 			continue
 		}
-		if date.Unix() >= firstDate.Unix() {
+		if firstDate != nil && date.Unix() >= firstDate.Unix() {
 			continue
 		}
 		open, err := strconv.ParseFloat(cs[1], 64)
@@ -57,11 +57,11 @@ func GetHistory(sym string, stockID uint, firstDate time.Time) (candles []models
 		if err != nil {
 			continue
 		}
-		close, err := strconv.ParseFloat(cs[5], 64)
+		close, err := strconv.ParseFloat(cs[4], 64)
 		if err != nil {
 			continue
 		}
-		volume, err := strconv.ParseFloat(cs[6], 64)
+		volume, err := strconv.ParseFloat(cs[5], 64)
 		if err != nil {
 			continue
 		}
