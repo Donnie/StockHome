@@ -3,6 +3,7 @@ package providers
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/Donnie/stockhome/models"
 	"github.com/Donnie/stockhome/ptr"
@@ -32,7 +33,7 @@ func UpdateIdxS500(db *gorm.DB) {
 	for _, cs := range csv[1:] {
 		if len(cs) > 2 {
 			stock := models.Stock{
-				Symbol: ptr.String(cs[0]),
+				Symbol: ptr.String(strings.Replace(cs[0], ".", "-", -1)),
 				Name:   ptr.String(cs[1]),
 				Sector: ptr.String(cs[2]),
 			}
