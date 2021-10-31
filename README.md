@@ -16,7 +16,8 @@ You can get access to the stock data with daily resolution in USD terms going ba
 
 API: https://stockhome.donnie.in
 
-API example: https://stockhome.donnie.in/stocks/MMM?key=admin
+API example: https://stockhome.donnie.in/stocks/MMM?key=admin&start=2020-01-01&end=2020-12-31
+- start and end are optional parameters
 
 Please request access key by emailing to stockhome@donnie.in with subject: OHCLV Data.
 

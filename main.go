@@ -27,47 +27,28 @@ func init() {
 }
 
 func main() {
-	// put DB to context
-	db := initDB()
+	initDB()
 
 	r := gin.Default()
-	r.GET("/stocks/:sym", func(c *gin.Context) {
-		key, ok := c.GetQuery("key")
 
-		if ok && key == os.Getenv("PASS") {
-			stock := models.GetStockWithCandles(db, c.Param("sym"))
-			c.JSON(200, stock)
-			return
-		}
-		c.JSON(403, "Please provide API key")
-	})
-
-	r.GET("/indices/:sym", func(c *gin.Context) {
-		key, ok := c.GetQuery("key")
-
-		if ok && key == os.Getenv("PASS") {
-			index := models.GetIndexWithStocks(db, c.Param("sym"))
-			c.JSON(200, index)
-			return
-		}
-		c.JSON(403, "Please provide API key")
-	})
-
+	r.GET("/stocks/:sym", stockHandler)
+	r.GET("/indices/:sym", indexHandler)
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(200, nil)
 	})
+
 	go r.Run()
 
 	// create scheduler
 	// update indices
-	gocron.Every(1).Week().Do(providers.UpdateIndices, db)
+	gocron.Every(1).Week().Do(providers.UpdateIndices, models.DB)
 
 	// update stocks
-	gocron.Every(1).Day().At(os.Getenv("TIME")).Do(providers.UpdateCandles, db)
+	gocron.Every(1).Day().At(os.Getenv("TIME")).Do(providers.UpdateCandles, models.DB)
 
 	// Update historical candles
 	// rate, _ := strconv.Atoi(os.Getenv("HIST_RATE"))
-	// gocron.Every(uint64(rate)).Second().Do(providers.UpdateHistoryCandles, db)
+	// gocron.Every(uint64(rate)).Second().Do(providers.UpdateHistoryCandles, models.DB)
 
 	// Start jobs
 	<-gocron.Start()

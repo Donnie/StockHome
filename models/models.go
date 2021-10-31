@@ -3,7 +3,12 @@ package models
 import (
 	"database/sql"
 	"time"
+
+	"gorm.io/gorm"
 )
+
+// DB Database
+var DB *gorm.DB
 
 // Candle to hold daily OHCLV data
 type Candle struct {

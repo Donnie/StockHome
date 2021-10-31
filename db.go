@@ -5,11 +5,12 @@ import (
 	"os"
 	"time"
 
+	"github.com/Donnie/stockhome/models"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
-func initDB() *gorm.DB {
+func initDB() {
 	// init DB
 	db, err := gorm.Open(sqlite.Open(os.Getenv("DB_FILE")), &gorm.Config{})
 	if err != nil {
@@ -23,5 +24,5 @@ func initDB() *gorm.DB {
 	sqlDB.SetMaxOpenConns(10)
 	migrateUp(sqlDB)
 
-	return db
+	models.DB = db
 }
