@@ -16,7 +16,7 @@ func GenAlpha(symbol string, free bool) (string, *float64) {
 	api := os.Getenv("HIST")
 	apikey := os.Getenv("HIST_KEY")
 	ep := fmt.Sprintf(
-		"%s?function=TIME_SERIES_DAILY&symbol=%s&apikey=%s&datatype=csv&outputsize=full",
+		"%s?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%s&apikey=%s&datatype=csv&outputsize=full",
 		api,
 		symbol,
 		apikey,

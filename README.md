@@ -1,7 +1,7 @@
 # StockHome
 I wrote this app to collect and store historical OHCLV candle data with daily resolution.
 
-The app regularly updates the stocks data at 01:00 UTC.
+The app regularly updates the stocks data by 21:30 UTC.
 
 As of now the focus is on S&P 500 stocks, but there are plans to extend it to other indices.
 
@@ -12,7 +12,7 @@ Index data is available on /indices/:sym endpoint
 A *special key* has to be added as query parameter, which can be set in PASS variable in .env file
 
 ## Data
-You can get access to the stock data with daily resolution in USD terms going back to 2010-01-04.
+You can get access to the stock data with daily resolution in USD terms, split adjusted, going back to 2010-01-04.
 
 API: https://stockhome.donnie.in
 
